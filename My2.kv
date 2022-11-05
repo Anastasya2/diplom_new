@@ -1,0 +1,289 @@
+#: include My1.kv
+#: include My.kv
+
+
+
+
+
+WindowManager:
+    SevenWindow:
+    EightWindow:
+    NineWindow:
+    TenWindow:
+    ElevenWindow:
+
+
+
+<StackButton@MDFloatingActionButton>
+    pos: self.parent.center_x - self.width / 2, "56dp"
+
+
+
+
+<SevenWindow>:
+
+    name: 'seven'
+
+    MDBottomNavigation:
+        id: bottom_navigation
+        panel_color: app.theme_cls.bg_darkest
+        selected_color_background: self.panel_color
+        panel_color: (0/255, 95/255, 145/255,1)
+
+        MDBottomNavigationItem:
+            name: 'screen 1'
+            text: 'Sugar'
+
+            FitImage:
+                source:"pap2.png"
+
+            MDLabel:
+                text: 'Diagram'
+                halign: 'center'
+
+        MDBottomNavigationItem:
+            name: 'screen 2'
+            text: '...'
+
+            MDLabel:
+                text: 'something'
+                halign: 'center'
+
+        MDBottomNavigationItem:
+            name: 'screen 3'
+            text: '...'
+
+            MDLabel:
+                text: 'something'
+                halign: 'center'
+
+        MDBottomNavigationItem:
+            name: 'screen 4'
+            text: '...'
+
+            MDLabel:
+                text: 'something'
+                halign: 'center'
+
+    StackButton:
+        id: food
+        icon: "cookie-outline"
+        type: "small"
+        on_release:
+            root.manager.transition = NoTransition(duration = 0)
+            root.manager.current = "ten"
+
+    StackButton:
+        id: meds
+        icon: "pill-multiple"
+        type: "small"
+        on_release:
+            root.manager.transition = NoTransition(duration = 0)
+            root.manager.current = "eight"
+
+    StackButton:
+        id: blood
+        icon: "hand-water"
+        on_release:
+            root.manager.transition = NoTransition(duration = 0)
+            root.manager.current = "nine"
+
+    RootButton:
+        id: btn_root
+        icon: "plus"
+        elevation: 0
+        pos_hint: {"center_x": .5}
+        y:"56dp"
+        md_bg_color: (42/255, 170/255, 209/255,1)
+        on_release: root.anim_btn()
+
+
+
+
+
+<EightWindow>:
+    name: 'eight'
+
+    Button:
+        text:"2"
+
+
+
+
+
+<NineWindow>:
+    name: 'nine'
+    Button:
+        text:"1"
+
+
+
+
+<TenWindow>:
+    name: 'ten'
+
+    FitImage:
+        source:"pap12.png"
+
+
+
+
+
+    MDBottomNavigation:
+        id: bottom_navigation1
+        panel_color: app.theme_cls.bg_darkest
+        selected_color_background: self.panel_color
+        panel_color: (0/255, 95/255, 145/255,1)
+
+
+
+
+        MDBottomNavigationItem:
+            name: 'screen 11'
+            text: 'Sugar'
+
+
+
+            FitImage:
+                source:"pap2.png"
+
+            MDLabel:
+                text: 'Diagram'
+                halign: 'center'
+            AnchorLayout:
+                anchor_x:'left'
+                anchor_y:'bottom'
+                padding: 10
+                MDFloatingActionButton:
+                    icon: "plus"
+                    md_bg_color: app.theme_cls.primary_color
+                    on_release:
+                        app.root.current = "seven"
+                        root.manager.transition.direction = "right"
+
+        MDBottomNavigationItem:
+            name: 'screen 12'
+            text: '...'
+
+
+
+            FitImage:
+                source:"pap2.png"
+
+            AnchorLayout:
+                anchor_x:'right'
+                anchor_y:'bottom'
+                padding: 10
+
+                MDScrollView:
+
+                    MDList:
+                        id: container
+
+                MDFloatingActionButton:
+                    icon: "plus"
+                    md_bg_color: app.theme_cls.primary_color
+                    on_release:
+                        app.root.current = "eleven"
+                        root.manager.transition.direction = "right"
+
+
+
+
+
+
+<ElevenWindow>:
+    name: 'eleven'
+
+    FitImage:
+        source:"pap12.png"
+
+    GridLayout:
+        cols: 1
+
+        BoxLayout:
+            orientation:'vertical'
+            padding: 10
+            spacing: 1
+
+            Widget:
+                size_hint: 1,.001
+
+            MDLabel:
+                text: '   Хлебная единица — условная единица, используется для приблизительной оценки количества углеводов в продуктах.\n ГИ — показатель, по которому оценивается скорость попадания глюкозы в кровь.'
+
+            #MDLabel:
+             #   text: '   ГИ — показатель, по которому оценивается скорость попадания глюкозы в кровь.'
+
+            Widget:
+                size_hint: 1,.4
+
+        BoxLayout:
+            orientation:'vertical'
+            padding: 10
+            spacing: 5
+
+            MDTextField:
+                id: dbname
+                hint_text: "Product"
+                helper_text_mode: 'on_focus'
+                line_color_normal: 'black'
+                line_color_focus: "black"
+                hint_text_color_normal: "black"
+                hint_text_color_focus: "black"
+                text_color_focus: "black"
+                size_hint_x: None
+                width: 200
+                font_size: 20
+                pos_hint: {'center_x':.5}
+
+            MDTextField:
+                id: dbgi
+                hint_text: "GI"
+                helper_text_mode: 'on_focus'
+                line_color_normal: 'black'
+                line_color_focus: "black"
+                hint_text_color_normal: "black"
+                hint_text_color_focus: "black"
+                text_color_focus: "black"
+                size_hint_x: None
+                width: 200
+                font_size: 20
+                pos_hint: {'center_x':.5}
+
+            MDTextField:
+                id: dbxe
+                hint_text: "XE"
+                helper_text_mode: 'on_focus'
+                line_color_normal: 'black'
+                line_color_focus: "black"
+                hint_text_color_normal: "black"
+                hint_text_color_focus: "black"
+                text_color_focus: "black"
+                size_hint_x: None
+                width: 200
+                font_size: 20
+                pos_hint: {'center_x':.5}
+
+            MDRaisedButton:
+                text: "Добавить"
+                size_hint:(.5,.1)
+                md_bg_color: (52/255, 125/255, 199/255, 1)
+                pos_hint: {"center_x": .5, "center_y": .5}
+                on_press: app.submit()
+
+            MDRaisedButton:
+                text: "Очистить"
+                size_hint:(.5,.1)
+                md_bg_color: (52/255, 125/255, 199/255, 1)
+                pos_hint: {"center_x": .5, "center_y": .5}
+                on_press: app.clear2()
+
+            MDRaisedButton:
+                text: "Назад"
+                size_hint:(.5,.1)
+                md_bg_color: (52/255, 125/255, 199/255, 1)
+                pos_hint: {"center_x": .5, "center_y": .5}
+                on_release:
+                    app.root.current = "ten"
+                    root.manager.transition.direction = "right"

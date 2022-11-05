@@ -1,0 +1,251 @@
+#: include My2.kv
+#: include My.kv
+
+
+WindowManager:
+    FiveWindow:
+    SixWindow:
+    SevenWindow:
+    EightWindow:
+    NineWindow:
+    TenWindow:
+    ElevenWindow:
+
+
+
+<FiveWindow>:
+    name: 'five'
+    id: log
+
+    FitImage:
+        source:"pap6.png"
+
+    BoxLayout:
+        size_hint: 1,1
+        pos_hint: {'center_x':.5, 'center_y':.5}
+        padding: 25
+        spacing: 25
+        orientation: 'vertical'
+
+        MDLabel:
+            id: welcome_label
+            text: 'Welcome'
+            font_size: 40
+            halign: 'center'
+            size_hint_y: None
+            height: self.texture_size[1]
+            padding_y: 15
+
+        MDTextField:
+            id: firstname
+            hint_text: "FirstName"
+            helper_text_mode: 'on_focus'
+            line_color_normal: 'black'
+            line_color_focus: "black"
+            hint_text_color_normal: "black"
+            hint_text_color_focus: "black"
+            text_color_focus: "black"
+            icon_right: 'account'
+            icon_right_color_normal: "black"
+            icon_right_color_focus: "black"
+            size_hint_x: None
+            width: 200
+            font_size: 20
+            pos_hint: {'center_x':.5}
+
+        MDTextField:
+            id: secondname
+            hint_text: "SecondName"
+            helper_text_mode: 'on_focus'
+            line_color_normal: 'black'
+            line_color_focus: "black"
+            hint_text_color_normal: "black"
+            hint_text_color_focus: "black"
+            text_color_focus: "black"
+            icon_right: 'account'
+            icon_right_color_normal: "black"
+            icon_right_color_focus: "black"
+            size_hint_x: None
+            width: 200
+            font_size: 20
+            pos_hint: {'center_x':.5}
+
+        GridLayout:
+            cols:2
+
+            Label:
+                color: (7/255,7/255,7/255,1)
+                text: "male"
+                font_size: 18
+
+            Label:
+                color: (7/255,7/255,7/255,1)
+                text: "   female"
+                font_size: 18
+
+            CheckBox:
+                color: (7/255,7/255,7/255,1)
+                id: check
+                group: 'sex'
+                on_active: app.checkbox_click(self, self.active, "male")
+
+            CheckBox:
+                color: (7/255,7/255,7/255,1)
+                id: check2
+                group: 'sex'
+                on_active: app.checkbox_click(self, self.active, "female")
+
+
+        BoxLayout:
+            size_hint: 1,1
+
+            Widget:
+
+            MDRoundFlatButton:
+                text:'Next'
+                text_color: "black"
+                line_color: "black"
+                font_size: 12
+                padding:10
+                on_press: app.logger()
+                on_release:
+                    app.root.current = "six"
+                    root.manager.transition.direction = "left"
+
+            Widget:
+                size_hint:.1,.1
+
+            MDRoundFlatButton:
+                text:'Clear'
+                text_color: "black"
+                line_color: "black"
+                font_size: 12
+                padding:3
+                on_press: app.clear()
+
+            Widget:
+
+        Widget:
+            size_hint:.1,.1
+
+
+
+
+
+<SixWindow>:
+    name: 'six'
+
+    FitImage:
+        source:"pap6.png"
+
+    BoxLayout:
+        size_hint: 1,1
+        pos_hint: {'center_x':.5, 'center_y':.5}
+        padding: 25
+        spacing: 25
+        orientation: 'vertical'
+
+        MDLabel:
+            id: welcome1_label
+            font_size: 20
+            halign: 'center'
+            size_hint_y: None
+            height: self.texture_size[1]
+            padding_y: 15
+
+        MDTextField:
+            id: age
+            hint_text: "age"
+            helper_text_mode: 'on_focus'
+            line_color_normal: 'black'
+            line_color_focus: "black"
+            hint_text_color_normal: "black"
+            hint_text_color_focus: "black"
+            text_color_focus: "black"
+            icon_right: 'account'
+            icon_right_color_normal: "black"
+            icon_right_color_focus: "black"
+            size_hint_x: None
+            width: 200
+            font_size: 20
+            pos_hint: {'center_x':.5}
+
+        MDTextField:
+            id: height
+            hint_text: "height"
+            helper_text_mode: 'on_focus'
+            line_color_normal: 'black'
+            line_color_focus: "black"
+            hint_text_color_normal: "black"
+            hint_text_color_focus: "black"
+            text_color_focus: "black"
+            icon_right: 'account'
+            icon_right_color_normal: "black"
+            icon_right_color_focus: "black"
+            size_hint_x: None
+            width: 200
+            font_size: 20
+            pos_hint: {'center_x':.5}
+
+        MDTextField:
+            id: weight
+            hint_text: "weight"
+            helper_text_mode: 'on_focus'
+            line_color_normal: 'black'
+            line_color_focus: "black"
+            hint_text_color_normal: "black"
+            hint_text_color_focus: "black"
+            text_color_focus: "black"
+            icon_right: 'account'
+            icon_right_color_normal: "black"
+            icon_right_color_focus: "black"
+            size_hint_x: None
+            width: 200
+            font_size: 20
+            pos_hint: {'center_x':.5}
+
+        BoxLayout:
+            size_hint: 1,1
+
+            Widget:
+
+            MDRoundFlatButton:
+                text:'Back'
+                text_color: "black"
+                line_color: "black"
+                font_size: 12
+                padding:10
+                on_release:
+                    app.root.current = "five"
+                    root.manager.transition.direction = "right"
+
+            Widget:
+                size_hint:.1,.1
+
+            MDRoundFlatButton:
+                text:'Clear'
+                text_color: "black"
+                line_color: "black"
+                font_size: 12
+                padding:3
+                on_press: app.clear1()
+
+            Widget:
+                size_hint:.1,.1
+
+            MDRoundFlatButton:
+                text:'Next'
+                text_color: "black"
+                line_color: "black"
+                font_size: 12
+                padding:10
+                on_press: app.logger1()
+                on_release:
+                    app.root.current = "seven"
+                    root.manager.transition.direction = "left"
+
+            Widget:
+        Widget:
+
+            size_hint:.1,.1
+

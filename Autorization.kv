@@ -1,6 +1,6 @@
 #: import NoTransition kivy.uix.screenmanager.NoTransition
-#: include My1.kv
-#: include My2.kv
+#: include Main_part.kv
+#: include Main_part2.kv
 
 
 WindowManager:
@@ -15,13 +15,30 @@ WindowManager:
     NineWindow:
     TenWindow:
     ElevenWindow:
+    TwelveWindow:
+    ThirteenWindow:
+    ForteenWindow:
+    FivteenWindow:
+    SixteenWindow:
+    SeventeenWindow:
+    EighteenWindow:
+    NineteenWindow:
+    TwentyWindow:
+    TwentyOneWindow:
+    TwentyTwoWindow:
+    TwentyThreeWindow:
+    TwentyFourWindow:
+    TwentyFiveWindow:
+    TwentySixWindow:
+    TwentySevenWindow:
+
 
 
 <FirstWindow>:
     name: 'first'
 
     Image:
-        source:"ppp9.png"
+        source:"background.png"
 
     BoxLayout:
         orientation:'vertical'
@@ -34,39 +51,35 @@ WindowManager:
             orientation:"vertical"
 
             Label:
-                text:"Convenient tracking"
-                font_size: 30
+                text:"Удобное отслеживание данных"
+                font_size: 25
                 size_hint: (1,1.9)
-                color: (40/255, 23/255, 246/255,1)
+                color: (44/255, 37/255, 198/255,1)
                 bold: True
                 outline_color: (0,0,0)
                 outline_width: 1
 
             Image:
-                source:"f222.png"
-                size_hint: (1,1.9)
+                source:"pill.png"
+                size_hint: (1,4.3)
 
         Label:
-            text:"Log meals, meds, blood sugar "
+            text:"Добавляйте лекарства, глюкозу,  "
             font_size: 20
             size_hint: (1,.3)
             markup: True
-            color: (40/255, 23/255, 246/255,1)
+            color: (44/255, 37/255, 198/255,1)
             bold: True
             italic: True
-            #outline_color: (0,0,0)
-            #outline_width: 1
 
         Label:
-            text:"and more..."
+            text:" давление и другое..."
             font_size: 20
             size_hint: (1,.2)
             markup: True
-            color: (40/255, 23/255, 246/255,1)
+            color: (44/255, 37/255, 198/255,1)
             bold: True
             italic: True
-            #outline_color: (0,0,0)
-            #outline_width: 1
 
         AnchorLayout:
 
@@ -74,7 +87,7 @@ WindowManager:
                 anchor_x:"center"
                 anchor_y:"center"
                 size_hint:(.2,.8)
-                background_normal:"fff13.png"
+                background_normal:"arrow.png"
                 font_size:32
                 on_release:
                     app.root.current = "second"
@@ -85,12 +98,11 @@ WindowManager:
 
 
 
-
 <SecondWindow>:
     name: 'second'
 
     Image:
-        source:"ppp9.png"
+        source:"background.png"
 
     BoxLayout:
         orientation:'vertical'
@@ -103,38 +115,43 @@ WindowManager:
             orientation:"vertical"
 
             Label:
-                text:"Remainders system"
+                text:"Система уведомлений"
                 font_size: 30
                 size_hint: (1,1)
-                color: (40/255, 23/255, 246/255,1)
+                color: (44/255, 37/255, 198/255,1)
                 bold: True
                 outline_color: (0,0,0)
                 outline_width: 1
 
             Image:
-                source:"f55.png"
+                source:"reminders.png"
 
         Label:
-            text:"A reminder system to help you "
+            text:"Ежедневные напоминания помогут "
             font_size: 20
             size_hint: (1,.3)
             markup: True
-            color: (40/255, 23/255, 246/255,1)
+            color: (44/255, 37/255, 198/255,1)
             bold: True
             italic: True
-            #outline_color: (0,0,0)
-            #outline_width: 1
 
         Label:
-            text:"never forget your medications"
+            text:"вам не забывать о лекарствах"
             font_size: 20
             size_hint: (1,.2)
             markup: True
-            color: (40/255, 23/255, 246/255,1)
+            color: (44/255, 37/255, 198/255,1)
             bold: True
             italic: True
-            #outline_color: (0,0,0)
-            #outline_width: 1
+
+        Label:
+            text:"и физической активности"
+            font_size: 20
+            size_hint: (1,.2)
+            markup: True
+            color: (44/255, 37/255, 198/255,1)
+            bold: True
+            italic: True
 
         AnchorLayout:
 
@@ -142,7 +159,7 @@ WindowManager:
                 anchor_x:"center"
                 anchor_y:"center"
                 size_hint:(.2,.8)
-                background_normal:"fff13.png"
+                background_normal:"arrow.png"
                 font_size:32
                 on_release:
                     app.root.current = "three"
@@ -153,13 +170,11 @@ WindowManager:
 
 
 
-
-
 <ThreeWindow>:
     name: 'three'
 
     Image:
-        source:"ppp9.png"
+        source:"background.png"
 
     BoxLayout:
         orientation:'vertical'
@@ -172,38 +187,34 @@ WindowManager:
             orientation:"vertical"
 
             Label:
-                text:"Colorful interface"
+                text:"Наглядная статистика"
                 font_size: 30
                 size_hint: (1,1)
-                color: (40/255, 23/255, 246/255,1)
+                color: (44/255, 37/255, 198/255,1)
                 bold: True
                 outline_color: (0,0,0)
                 outline_width: 1
 
             Image:
-                source:"f66.png"
+                source:"statistics.png"
 
         Label:
-            text:"Simple colorful visuals to improve"
-            font_size: 18
+            text:"Отслеживайте свой прогресс "
+            font_size: 20
             size_hint: (1,.3)
             markup: True
-            color: (40/255, 23/255, 246/255,1)
+            color: (44/255, 37/255, 198/255,1)
             bold: True
             italic: True
-            #outline_color: (0,0,0)
-            #outline_width: 1
 
         Label:
-            text:"emotional state and relieve stress"
-            font_size: 18
+            text:"с помощью графиков и диаграмм"
+            font_size: 20
             size_hint: (1,.2)
             markup: True
-            color: (40/255, 23/255, 246/255,1)
+            color: (44/255, 37/255, 198/255,1)
             bold: True
             italic: True
-            #outline_color: (0,0,0)
-            #outline_width: 1
 
         AnchorLayout:
 
@@ -211,7 +222,7 @@ WindowManager:
                 anchor_x:"center"
                 anchor_y:"center"
                 size_hint:(.2,.8)
-                background_normal:"fff13.png"
+                background_normal:"arrow.png"
                 font_size:32
                 on_release:
                     app.root.current = "four"
@@ -222,13 +233,11 @@ WindowManager:
 
 
 
-
-
 <FourWindow>:
     name: 'four'
 
     Image:
-        source:"ppp9.png"
+        source:"background.png"
 
     BoxLayout:
         orientation:'vertical'
@@ -244,13 +253,13 @@ WindowManager:
                 text:"2D"
                 font_size: 30
                 size_hint: (1,1)
-                color: (40/255, 23/255, 246/255,1)
+                color: (44/255, 37/255, 198/255,1)
                 bold: True
                 outline_color: (0,0,0)
                 outline_width: 1
 
             Image:
-                source:"f88.png"
+                source:"logo.png"
                 size_hint: (1,1.5)
 
         Label:
@@ -258,7 +267,7 @@ WindowManager:
             font_size: 30
             size_hint: (1,.5)
             markup: True
-            color: (40/255, 23/255, 246/255,1)
+            color: (44/255, 37/255, 198/255,1)
             bold: True
             italic: True
             outline_color: (0,0,0)
@@ -270,7 +279,7 @@ WindowManager:
                 anchor_x:"center"
                 anchor_y:"center"
                 size_hint:(.4,.7)
-                background_normal:"ff3.png"
+                background_normal:"start.png"
                 font_size:32
                 on_release:
                     root.manager.transition = NoTransition(duration = 0)

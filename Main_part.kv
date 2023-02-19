@@ -1,5 +1,5 @@
-#: include My2.kv
-#: include My.kv
+#: include Autorization.kv
+#: include Main_part2.kv
 
 
 WindowManager:
@@ -10,6 +10,22 @@ WindowManager:
     NineWindow:
     TenWindow:
     ElevenWindow:
+    TwelveWindow:
+    ThirteenWindow:
+    ForteenWindow:
+    FivteenWindow:
+    SixteenWindow:
+    SeventeenWindow:
+    EighteenWindow:
+    NineteenWindow:
+    TwentyWindow:
+    TwentyOneWindow:
+    TwentyTwoWindow:
+    TwentyThreeWindow:
+    TwentyFourWindow:
+    TwentyFiveWindow:
+    TwentySixWindow:
+    TwentySevenWindow:
 
 
 
@@ -18,7 +34,7 @@ WindowManager:
     id: log
 
     FitImage:
-        source:"pap6.png"
+        source:"bg.png"
 
     BoxLayout:
         size_hint: 1,1
@@ -29,8 +45,8 @@ WindowManager:
 
         MDLabel:
             id: welcome_label
-            text: 'Welcome'
-            font_size: 40
+            text: 'Пожалуйста, укажите свои данные: '
+            font_size: 25
             halign: 'center'
             size_hint_y: None
             height: self.texture_size[1]
@@ -38,7 +54,7 @@ WindowManager:
 
         MDTextField:
             id: firstname
-            hint_text: "FirstName"
+            hint_text: "Имя"
             helper_text_mode: 'on_focus'
             line_color_normal: 'black'
             line_color_focus: "black"
@@ -55,7 +71,7 @@ WindowManager:
 
         MDTextField:
             id: secondname
-            hint_text: "SecondName"
+            hint_text: "Фамилия"
             helper_text_mode: 'on_focus'
             line_color_normal: 'black'
             line_color_focus: "black"
@@ -75,12 +91,12 @@ WindowManager:
 
             Label:
                 color: (7/255,7/255,7/255,1)
-                text: "male"
+                text: "М"
                 font_size: 18
 
             Label:
                 color: (7/255,7/255,7/255,1)
-                text: "   female"
+                text: " Ж"
                 font_size: 18
 
             CheckBox:
@@ -102,12 +118,13 @@ WindowManager:
             Widget:
 
             MDRoundFlatButton:
-                text:'Next'
+                text:'Далее'
                 text_color: "black"
                 line_color: "black"
                 font_size: 12
                 padding:10
                 on_press: app.logger()
+
                 on_release:
                     app.root.current = "six"
                     root.manager.transition.direction = "left"
@@ -116,12 +133,12 @@ WindowManager:
                 size_hint:.1,.1
 
             MDRoundFlatButton:
-                text:'Clear'
+                text:'Очистить'
                 text_color: "black"
                 line_color: "black"
                 font_size: 12
                 padding:3
-                on_press: app.clear()
+                on_press: app.clear_five_window()
 
             Widget:
 
@@ -136,7 +153,7 @@ WindowManager:
     name: 'six'
 
     FitImage:
-        source:"pap6.png"
+        source:"bg.png"
 
     BoxLayout:
         size_hint: 1,1
@@ -147,7 +164,7 @@ WindowManager:
 
         MDLabel:
             id: welcome1_label
-            font_size: 20
+            font_size: 25
             halign: 'center'
             size_hint_y: None
             height: self.texture_size[1]
@@ -155,7 +172,7 @@ WindowManager:
 
         MDTextField:
             id: age
-            hint_text: "age"
+            hint_text: "Возраст"
             helper_text_mode: 'on_focus'
             line_color_normal: 'black'
             line_color_focus: "black"
@@ -172,7 +189,7 @@ WindowManager:
 
         MDTextField:
             id: height
-            hint_text: "height"
+            hint_text: "Рост"
             helper_text_mode: 'on_focus'
             line_color_normal: 'black'
             line_color_focus: "black"
@@ -189,7 +206,7 @@ WindowManager:
 
         MDTextField:
             id: weight
-            hint_text: "weight"
+            hint_text: "Вес"
             helper_text_mode: 'on_focus'
             line_color_normal: 'black'
             line_color_focus: "black"
@@ -210,7 +227,7 @@ WindowManager:
             Widget:
 
             MDRoundFlatButton:
-                text:'Back'
+                text:'Назад'
                 text_color: "black"
                 line_color: "black"
                 font_size: 12
@@ -223,28 +240,26 @@ WindowManager:
                 size_hint:.1,.1
 
             MDRoundFlatButton:
-                text:'Clear'
+                text:'Очистить'
                 text_color: "black"
                 line_color: "black"
                 font_size: 12
                 padding:3
-                on_press: app.clear1()
+                on_press: app.clear_six_window()
 
             Widget:
                 size_hint:.1,.1
 
             MDRoundFlatButton:
-                text:'Next'
+                text:'Далее'
                 text_color: "black"
                 line_color: "black"
                 font_size: 12
                 padding:10
                 on_press: app.logger1()
-                on_release:
-                    app.root.current = "seven"
-                    root.manager.transition.direction = "left"
 
             Widget:
+
         Widget:
 
             size_hint:.1,.1

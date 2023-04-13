@@ -14,16 +14,14 @@ from kivymd.uix.screen import MDScreen
 from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.uix.button import MDFloatingActionButton
 from kivymd.uix.templates import RotateWidget
-from kivy.animation import Animation
-from kivy.clock import Clock
 from kivy.metrics import dp
 from kivy.uix.gridlayout import GridLayout
 from kivymd.uix.button import MDRaisedButton
-import mysql.connector
 from kivymd.app import MDApp
 from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.card import MDCard
 from kivy.properties import StringProperty, ObjectProperty
+import sqlite3
 
 
 class Popups(FloatLayout):
@@ -68,6 +66,60 @@ class HeroCard_Statistics(ElevationCard):
     manager = ObjectProperty()
 
 
+class HeroCard_xe_calculator(ElevationCard):
+    source = StringProperty()
+    tag = StringProperty()
+    manager = ObjectProperty()
+
+
+class HeroCard_info(ElevationCard):
+    source = StringProperty()
+    tag = StringProperty()
+    manager = ObjectProperty()
+
+
+class HeroCard_diabet(ElevationCard):
+    source = StringProperty()
+    tag = StringProperty()
+    manager = ObjectProperty()
+
+class HeroCard_diapozon_sugar(ElevationCard):
+    source = StringProperty()
+    tag = StringProperty()
+    manager = ObjectProperty()
+
+class HeroCard_symptoms(ElevationCard):
+    source = StringProperty()
+    tag = StringProperty()
+    manager = ObjectProperty()
+
+class HeroCard_lechenie(ElevationCard):
+    source = StringProperty()
+    tag = StringProperty()
+    manager = ObjectProperty()
+
+class HeroCard_diagnostica(ElevationCard):
+    source = StringProperty()
+    tag = StringProperty()
+    manager = ObjectProperty()
+
+class HeroCard_first_help(ElevationCard):
+    source = StringProperty()
+    tag = StringProperty()
+    manager = ObjectProperty()
+
+class HeroCard_profilactica(ElevationCard):
+    source = StringProperty()
+    tag = StringProperty()
+    manager = ObjectProperty()
+
+
+class HeroCard_calculator_in(ElevationCard):
+    source = StringProperty()
+    tag = StringProperty()
+    manager = ObjectProperty()
+
+
 class FirstWindow(Screen):
     pass
 
@@ -98,34 +150,27 @@ class SevenWindow(MDScreen):
 
 class EightWindow(MDScreen):
 
-    mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        passwd="111222333",
-    )
+    conn = sqlite3.connect('diabet.db')
+    cursor = conn.cursor()
 
-    c = mydb.cursor()
+    cursor.execute("SELECT age FROM user")
+    age = cursor.fetchall()[0]
 
-    c.execute("USE app_db")
-    c.execute("SELECT age FROM app_db.user")
-    age = c.fetchall()[0]
+    cursor.execute("SELECT height FROM user")
+    hei = cursor.fetchall()[0]
 
-    c.execute("SELECT height FROM app_db.user")
-    hei = c.fetchall()[0]
-
-    c.execute("SELECT weight FROM app_db.user")
-    wei = c.fetchall()[0]
+    cursor.execute("SELECT weight FROM user")
+    wei = cursor.fetchall()[0]
 
     age = float(age[0])
     hei = float(hei[0])
     weight = float(wei[0])
-    c.execute("SELECT sex FROM app_db.user")
-    se = c.fetchall()[0]
+    cursor.execute("SELECT sex FROM user")
+    se = cursor.fetchall()[0]
     sex = se[0]
 
-
-    mydb.commit()
-    mydb.close()
+    conn.commit()
+    conn.close()
 
     sex = None
     age = 1
@@ -137,8 +182,6 @@ class EightWindow(MDScreen):
         EightWindow.age = float(age)
         EightWindow.hei = float(height)
         EightWindow.weight = float(weight)
-
-
     def log1(self, sex):
 
         EightWindow.sex = sex
@@ -173,19 +216,16 @@ class EightWindow(MDScreen):
         else:
             al = 20
 
-        mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            passwd="111222333",
-        )
-        c = mydb.cursor()
-        c.execute("USE app_db")
+        conn = sqlite3.connect('diabet.db')
+        cursor = conn.cursor()
 
         query = "SELECT CAST(SUM(XE) AS SIGNED) FROM food INNER JOIN food_days1 ON food.name = food_days1.days1"
 
-        c.execute(query)
+        cursor.execute(query)
 
-        sum1 = c.fetchall()[0]
+
+
+        sum1 = cursor.fetchall()[0]
         sum1 = sum1[0]
         sum1 = float(sum1)
         all = float(al)
@@ -198,9 +238,12 @@ class EightWindow(MDScreen):
         elif new >= 100:
             items = [{"За этот день": 100, "Норма": 0}]
 
-        mydb.commit()
-        mydb.close()
+        conn.commit()
+        conn.close()
     except:
+        conn.commit()
+        conn.close()
+
         items = [{"За этот день": 0, "Норма": 100}]
 
     def __init__(self, **kw):
@@ -246,26 +289,21 @@ class EightWindow(MDScreen):
             EightWindow.al = 20
 
         try:
-            mydb = mysql.connector.connect(
-                host="localhost",
-                user="root",
-                passwd="111222333",
-            )
-            c = mydb.cursor()
-            c.execute("USE app_db")
+
+            conn = sqlite3.connect('diabet.db')
+            cursor = conn.cursor()
 
             query = "SELECT CAST(SUM(XE) AS SIGNED) FROM food INNER JOIN food_days1 ON food.name = food_days1.days1"
 
-            c.execute(query)
+            cursor.execute(query)
 
-            sum1 = c.fetchall()[0]
+            sum1 = cursor.fetchall()[0]
             sum1 = sum1[0]
             sum1 = float(sum1)
             all = float(EightWindow.al)
             my = float(100)
             new = float((sum1 * my) / all)
             ost = my - new
-
 
             if new < 100:
                 self.piechart.items = [{"За этот день": new, "Норма": ost}]
@@ -274,9 +312,15 @@ class EightWindow(MDScreen):
 
             self.ids.wel.text = f'Сегодня употреблено: {int(sum1)} ХЕ'
 
-            mydb.commit()
-            mydb.close()
+
+
+            conn.commit()
+            conn.close()
+
         except:
+            conn.commit()
+            conn.close()
+
             self.piechart.items = [{"За этот день": 0, "Норма": 100}]
             try:
                 self.ids.wel.text = f'Сегодня употреблено: {int(sum1)} ХЕ'
@@ -378,6 +422,35 @@ class TwentySixWindow(MDScreen):
 
 class TwentySevenWindow(MDScreen):
     pass
+
+
+class TwentyEightWindow(MDScreen):
+    pass
+
+class TwentyNineWindow(MDScreen):
+    pass
+
+class ThirtyWindow(MDScreen):
+    pass
+
+class ThirtyOneWindow(MDScreen):
+    pass
+
+class ThirtyTwoWindow(MDScreen):
+    pass
+
+class ThirtyThreeWindow(MDScreen):
+    pass
+
+class ThirtyFourWindow(MDScreen):
+    pass
+
+class ThirtyFiveWindow(MDScreen):
+    pass
+
+class ThirtySixWindow(MDScreen):
+    pass
+
 
 class WindowManager(MDScreenManager):
     pass

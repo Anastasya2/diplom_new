@@ -1,4 +1,5 @@
 from kivy.config import Config
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivymd_extensions.akivymd.uix.charts import AKPieChart
@@ -457,6 +458,10 @@ class WindowManager(MDScreenManager):
 
 
 class RootButton(MDFloatingActionButton, RotateWidget):
+    pass
+
+
+class Content(BoxLayout):
     pass
 
 def show_popup(self, item):

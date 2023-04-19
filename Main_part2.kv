@@ -38,6 +38,7 @@ WindowManager:
 
 
 
+
 <StackButton@MDFloatingActionButton>
     pos: self.parent.center_x - self.width / 2, "56dp"
 
@@ -1614,6 +1615,8 @@ WindowManager:
             font_size: 20
             pos_hint: {'center_x':.5}
 
+
+
         MDRectangleFlatButton:
             text: "Ввести"
             size_hint:(.3,.1)
@@ -1624,3 +1627,13 @@ WindowManager:
             line_color: (29/255, 120/255, 111/255, 1)
             on_press: app.calculate()
 
+
+
+<Content>:
+    orientation: "vertical"
+    spacing: "2dp"
+    size_hint_y: None
+    height: "200dp"
+
+    MDLabel:
+        text: 'Углеводы\nБелки\nЖиры\n'

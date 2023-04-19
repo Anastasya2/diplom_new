@@ -1,6 +1,7 @@
 from ctypes import windll
 import plyer as plyer
 
+
 windll.user32.SetProcessDpiAwarenessContext(-4)
 
 from datetime import datetime, timedelta
@@ -38,6 +39,9 @@ from datetime import datetime
 from threading import Timer
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
+from kivymd.uix.dialog import MDDialog
+from kivy.uix.boxlayout import BoxLayout
+from kivymd.uix.label import MDLabel
 import numpy as np
 import sqlite3
 
@@ -46,6 +50,7 @@ class MyApp(MDApp):
     context_menu = None
     user_sex = None
     noti = False
+    dialog = None
 
     food_data = {
         'График': 'chart-line',
@@ -76,7 +81,6 @@ class MyApp(MDApp):
          XEs1            INT);''')
     conn.commit()
     conn.close()
-
 
 
 
@@ -763,7 +767,6 @@ class MyApp(MDApp):
 
             word = ''
 
-
         query = "SELECT CAST(SUM(XE) AS SIGNED) FROM food INNER JOIN food_days1 ON food.name = food_days1.days1"
 
         cursor.execute(query)
@@ -775,6 +778,17 @@ class MyApp(MDApp):
         if (int(self.sum1[0]) > 30):
             #notify3()
             pass
+
+        self.v = item.text
+
+        cursor.execute("SELECT * FROM food WHERE name  = ?", [self.v])
+        records1 = cursor.fetchall()[0]
+        print(records1[1])
+
+        self.dialog = MDDialog(title=f"{item.text}",
+                               text=f'Белки:\nЖиры:\nУглеводы:\nКалории:\n\nХлебные единицы: {records1[2]}\nГликемический индекс: {records1[1]}\n')
+
+        self.dialog.open()
 
         conn.commit()
         conn.close()
@@ -797,14 +811,23 @@ class MyApp(MDApp):
         word1 = ''
         word2 = ''
 
+
+
         for record, Gi, Xe in zip(records, GIS, XES):
             word = f'{word}\n{record[0]}'
             word1 = f'{word1}\n{Gi[0]}'
             word2 = f'{word2}\n{Xe[0]}'
             wor = word + word1 + word2
+            if Gi[0] < 40:
+                color = (176/255, 255/255, 191/255, 1)
+            elif (Gi[0] >= 40) and (Gi[0] < 70):
+                color = (246/255, 250/255, 187/255, 1)
+            elif Gi[0] >= 70:
+                color = (252/255, 215/255, 215/255, 1)
+
             self.root.get_screen("twelve").ids.container112.add_widget(
                 MDRectangleFlatButton(text=record[0], size_hint={1, .15}, text_color=(0, 0, 0, 1),
-                                      line_color=(0, 0, 0, 1), halign='left', on_release=self.foo)
+                                      line_color=(0,0,0,1), md_bg_color=color, halign='left', on_release=self.foo)
 
             )
 
@@ -888,11 +911,6 @@ class MyApp(MDApp):
                 Other_classes.HeroCard_profilactica(source="diab6.png", tag=f"Tag{6}",
                                                   on_touch_down=self.on_tap_card_profilactica)
             )
-
-        # if not self.root.get_screen("thirtysix").ids.hero_list_calc.children:
-        #     self.root.get_screen("thirtysix").ids.hero_list_calc.add_widget(
-        #         Other_classes.HeroCard_calculator_in(source="diab11.png", tag=f"Tag{0}", on_touch_down=self.on_tap_card_diabet)
-        #     )
 
 
 
@@ -1285,12 +1303,6 @@ class MyApp(MDApp):
         conn.close()
 
 
-    def pressed(self, value):
-        # value here is the OneLineListItem
-        self.root.get_screen("thirtyfive").ids.container111.clear_widgets()
-        # set TextField text to selected list item
-        self.root.get_screen("thirtyfive").ids.search_field.text = value.text
-        print(value.text)
     def set_list(self, text=" "):
 
         self.root.get_screen("twelve").ids.container112.clear_widgets()
@@ -1309,18 +1321,38 @@ class MyApp(MDApp):
         cursor.execute("SELECT XE FROM food ORDER BY name")
         XES = cursor.fetchall()
 
+        word = ''
+        word1 = ''
+        word2 = ''
 
-
-        glukosa_all_time = []
-        for i in records:
-            glukosa_all_time.append(i[0])
-
-        for icon in glukosa_all_time:
-            if icon.startswith(text):
+        for record, Gi, Xe in zip(records, GIS, XES):
+            word = f'{word}\n{record[0]}'
+            if Gi[0] < 40:
+                color = (176/255, 255/255, 191/255, 1)
+            elif (Gi[0] >= 40) and (Gi[0] < 70):
+                color = (246/255, 250/255, 187/255, 1)
+            elif Gi[0] >= 70:
+                color = (252/255, 215/255, 215/255, 1)
+            if record[0].startswith(text):
                 self.root.get_screen("twelve").ids.container112.add_widget(
-                    MDRectangleFlatButton(text=icon, size_hint={1, .15}, text_color=(0, 0, 0, 1),
-                                      line_color=(0, 0, 0, 1), halign='left', on_release=self.foo)
+                    MDRectangleFlatButton(text=record[0], size_hint={1, .15}, text_color=(0, 0, 0, 1),
+                                          line_color=(0,0,0,1), md_bg_color=color, halign='left', on_release=self.foo)
+
                 )
+                word = ''
+                word1 = ''
+                word2 = ''
+
+        # glukosa_all_time = []
+        # for i in records:
+        #     glukosa_all_time.append(i[0])
+        #
+        # for icon in glukosa_all_time:
+        #     if icon.startswith(text):
+        #         self.root.get_screen("twelve").ids.container112.add_widget(
+        #             MDRectangleFlatButton(text=icon, size_hint={1, .15}, text_color=(0, 0, 0, 1),
+        #                               line_color=(0, 0, 0, 1), halign='left', on_release=self.foo)
+        #         )
 
         conn.commit()
         conn.close()
@@ -1400,7 +1432,6 @@ def show_popup(self):
                         size_hint=(None, None), size=(270, 110))
 
     popupWindow.open()
-
 
 if __name__ == "__main__":
     MyApp().run()

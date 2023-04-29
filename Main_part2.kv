@@ -35,6 +35,8 @@ WindowManager:
     ThirtyFourWindow:
     ThirtyFiveWindow:
     ThirtySixWindow:
+    ThirtySevenWindow:
+    ThirtyEightWindow:
 
 
 
@@ -251,7 +253,7 @@ WindowManager:
     name: 'eleven'
 
     FitImage:
-        source:"bg_food_base.png"
+        source:"bg_food_base1.png"
 
     MDBoxLayout:
         orientation: "vertical"
@@ -263,29 +265,35 @@ WindowManager:
             left_action_items: [["arrow-left", lambda x:app.back_to_window_twelve()]]
             right_action_items: [["home", lambda x: app.back_to_window_seven(x)]]
 
-        GridLayout:
-            cols: 1
 
-            BoxLayout:
-                orientation:'vertical'
-                padding: 10
-                spacing: 3
 
-                Widget:
-                    size_hint: 1,.001
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+
+            MDBoxLayout:
+                id: box
+                orientation: "vertical"
+                padding: "15dp"
+                spacing: "7dp"
+                adaptive_height: True
+
+                canvas.before:
+                    #Color:
+                        #rgba:  rgba("#dae6f5")
+                    Rectangle:
+                        source: 'bg_food_base1.png'
+                        pos: self.pos
+                        size: self.size
 
                 MDLabel:
+                    text:
+                        '   Таблица хлебных единиц по ссылке: https://diacatalog.ru/питание-таблица-хлебных-единиц/\n Таблица гликемических индексов: http://frs24.ru/st/glikemicheskij-indeks-produktov-tablica/'
+                    size_hint_y: None
                     font_size: 19
-                    spacing: 4
-                    text: '   Таблица хлебных единиц по ссылке: https://diacatalog.ru/питание-таблица-хлебных-единиц/\n Таблица гликемических индексов: http://frs24.ru/st/glikemicheskij-indeks-produktov-tablica/'
-
-                Widget:
-                    size_hint: 1,.7
-
-            BoxLayout:
-                orientation:'vertical'
-                padding: 10
-                spacing: 4
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    padding: 7, 7
 
                 MDTextField:
                     id: dbname
@@ -297,7 +305,7 @@ WindowManager:
                     hint_text_color_focus: "black"
                     text_color_focus: "black"
                     size_hint_x: None
-                    width: 200
+                    width: 240
                     font_size: 20
                     pos_hint: {'center_x':.5}
 
@@ -311,7 +319,7 @@ WindowManager:
                     hint_text_color_focus: "black"
                     text_color_focus: "black"
                     size_hint_x: None
-                    width: 200
+                    width: 240
                     font_size: 20
                     pos_hint: {'center_x':.5}
 
@@ -325,7 +333,63 @@ WindowManager:
                     hint_text_color_focus: "black"
                     text_color_focus: "black"
                     size_hint_x: None
-                    width: 200
+                    width: 240
+                    font_size: 20
+                    pos_hint: {'center_x':.5}
+
+                MDTextField:
+                    id: dbpro
+                    hint_text: "Белки"
+                    helper_text_mode: 'on_focus'
+                    line_color_normal: 'black'
+                    line_color_focus: "black"
+                    hint_text_color_normal: "black"
+                    hint_text_color_focus: "black"
+                    text_color_focus: "black"
+                    size_hint_x: None
+                    width: 240
+                    font_size: 20
+                    pos_hint: {'center_x':.5}
+
+                MDTextField:
+                    id: dbfats
+                    hint_text: "Жиры"
+                    helper_text_mode: 'on_focus'
+                    line_color_normal: 'black'
+                    line_color_focus: "black"
+                    hint_text_color_normal: "black"
+                    hint_text_color_focus: "black"
+                    text_color_focus: "black"
+                    size_hint_x: None
+                    width: 240
+                    font_size: 20
+                    pos_hint: {'center_x':.5}
+
+                MDTextField:
+                    id: dbcarbo
+                    hint_text: "Углеводы"
+                    helper_text_mode: 'on_focus'
+                    line_color_normal: 'black'
+                    line_color_focus: "black"
+                    hint_text_color_normal: "black"
+                    hint_text_color_focus: "black"
+                    text_color_focus: "black"
+                    size_hint_x: None
+                    width: 240
+                    font_size: 20
+                    pos_hint: {'center_x':.5}
+
+                MDTextField:
+                    id: dbcal
+                    hint_text: "Калории"
+                    helper_text_mode: 'on_focus'
+                    line_color_normal: 'black'
+                    line_color_focus: "black"
+                    hint_text_color_normal: "black"
+                    hint_text_color_focus: "black"
+                    text_color_focus: "black"
+                    size_hint_x: None
+                    width: 240
                     font_size: 20
                     pos_hint: {'center_x':.5}
 
@@ -336,13 +400,13 @@ WindowManager:
                     pos_hint: {"center_x": .5, "center_y": .5}
                     on_press: app.add_food_to_bd()
 
-
                 MDRaisedButton:
                     text: "Очистить"
                     size_hint:(.5,.1)
                     md_bg_color: (221/255, 155/255, 232/255, 1)
                     pos_hint: {"center_x": .5, "center_y": .5}
                     on_press: app.clear_eleven_window()
+
 
 
 <TwelveWindow>:
@@ -1538,6 +1602,9 @@ WindowManager:
                     padding: 7, 7
 
 
+
+
+
 <ThirtySixWindow>:
     name: 'thirtysix'
     hero_to:hero_to
@@ -1637,3 +1704,49 @@ WindowManager:
 
     MDLabel:
         text: 'Углеводы\nБелки\nЖиры\n'
+
+
+<ThirtySevenWindow>:
+    name: 'thirtyseven'
+    MDBoxLayout:
+        spacing: "12dp"
+
+#        MDTextField:
+    #        id: texti
+   #         size_hint_x: None
+   #         pos_hint: {"top":1.03,'left': 1}
+   #         width: 200
+   #        font_size: 16
+   #         hint_text: "Введите граммы"
+   #         helper_text_mode: "on_focus"
+   #         line_color_normal: (1,1,1,1)
+   #         line_color_focus: (1,1,1,1)
+   #         hint_text_color_normal: (40/255, 40/255, 40/255,1)
+   #         hint_text_color_focus: (1,1,1,1)
+   #         text_color_focus: (1,1,1,1)
+        MDTextField:
+            id: texti
+            hint_text: "Введите граммы"
+            helper_text_mode: 'on_focus'
+            line_color_normal: "white"
+            line_color_focus: "white"
+            hint_text_color_normal: (40/255, 40/255, 40/255,1)
+            hint_text_color_focus: "white"
+            text_color_focus: "white"
+            size_hint_x: None
+            width: 200
+            font_size: 20
+            pos_hint: {"top":1.03,'left': 1}
+
+        MDIconButton:
+            icon: "plus"
+            theme_icon_color: "Custom"
+            icon_color: (1,1,1,1)
+            icon_size: "30sp"
+            pos_hint: {"top":1,'right': 1}
+            on_release: app.set_gramm(texti.text)
+
+
+
+
+

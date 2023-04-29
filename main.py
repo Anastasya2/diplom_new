@@ -42,6 +42,8 @@ from kivy.uix.label import Label
 from kivymd.uix.dialog import MDDialog
 from kivy.uix.boxlayout import BoxLayout
 from kivymd.uix.label import MDLabel
+from kivy.uix.textinput import TextInput
+from kivymd.uix.button import MDFlatButton
 import numpy as np
 import sqlite3
 
@@ -50,7 +52,8 @@ class MyApp(MDApp):
     context_menu = None
     user_sex = None
     noti = False
-    dialog = None
+    items = None
+    popupWindow = None
 
     food_data = {
         'График': 'chart-line',
@@ -735,6 +738,7 @@ class MyApp(MDApp):
         conn.close()
 
     def foo(self, item):
+        self.items = item.text
 
         conn = sqlite3.connect('diabet.db')
         cursor = conn.cursor()
@@ -744,40 +748,7 @@ class MyApp(MDApp):
                                  GIs1         VARCHAR(50),
                                  XEs1         VARCHAR(50));''')
 
-        sql_command3 = "INSERT INTO food_days1 (days1) VALUES (?)"
-        values = (item.text,)
 
-        cursor.execute(sql_command3, values)
-
-        print(item.id)
-
-        self.root.get_screen("ten").ids.container1.clear_widgets()
-
-
-        cursor.execute("SELECT days1 FROM food_days1")
-        records = cursor.fetchall()
-
-        word = ''
-
-        for record in records:
-            word = f'{word}\n{record[0]}'
-            self.root.get_screen("ten").ids.container1.add_widget(
-                OneLineListItem(text=f'{word}')
-            )
-
-            word = ''
-
-        query = "SELECT CAST(SUM(XE) AS SIGNED) FROM food INNER JOIN food_days1 ON food.name = food_days1.days1"
-
-        cursor.execute(query)
-
-
-
-        self.sum1 = cursor.fetchall()[0]
-        print(int(self.sum1[0]))
-        if (int(self.sum1[0]) > 30):
-            #notify3()
-            pass
 
         self.v = item.text
 
@@ -785,13 +756,35 @@ class MyApp(MDApp):
         records1 = cursor.fetchall()[0]
         print(records1[1])
 
-        self.dialog = MDDialog(title=f"{item.text}",
-                               text=f'Белки:\nЖиры:\nУглеводы:\nКалории:\n\nХлебные единицы: {records1[2]}\nГликемический индекс: {records1[1]}\n')
+        if records1[1] < 40:
+            color = (176 / 255, 255 / 255, 191 / 255, 1)
+            color_extra = (124 / 255, 247 / 255, 99 / 255, 1)
+        elif (records1[1] >= 40) and (records1[1] < 70):
+            color = (246 / 255, 250 / 255, 187 / 255, 1)
+            color_extra = (247 / 255, 237 / 255, 99 / 255, 1)
+        elif records1[1] >= 70:
+            color = (252 / 255, 215 / 255, 215 / 255, 1)
+            color_extra = (247 / 255, 99 / 255, 99 / 255, 1)
 
-        self.dialog.open()
+        self.lab = Label(text=f'Белки: {records1[3]}\nЖиры: {records1[4]}\nУглеводы: {records1[5]}\nКалории: {records1[6]}\n\nХлебные единицы: {records1[2]}\nГликемический индекс: {records1[1]}', color=color_extra, pos_hint = {'top':0.9})
+
+        self.boxl = Other_classes.ThirtySevenWindow()
+        self.boxl.add_widget(self.lab)
+
+        #self.root.get_screen("thirtyseven").ids.labtext.text = f'Белки: {records1[3]}\nЖиры: {records1[4]}\nУглеводы: {records1[5]}\nКалории: {records1[6]}\n\nХлебные единицы: {records1[2]}\nГликемический индекс: {records1[1]}'
+        self.popupWindow = Popup(title=f"{item.text}",
+                            content=self.boxl,
+                            size_hint=(None, None), size=(300, 340),
+                            separator_color=color_extra, title_align="center",
+                            title_color=color_extra)
+
+        self.popupWindow.open()
 
         conn.commit()
         conn.close()
+
+
+
     def on_start(self):
         conn = sqlite3.connect('diabet.db')
         cursor = conn.cursor()
@@ -967,6 +960,8 @@ class MyApp(MDApp):
         MDApp.get_running_app().root.current = "twentythree"
     def back_to_window_twentyeight(self):
         MDApp.get_running_app().root.current = "twentyeight"
+    def back_to_window_thirtyeight(self):
+        MDApp.get_running_app().root.current = "thirtyeight"
 
 
     def build(self):
@@ -979,7 +974,11 @@ class MyApp(MDApp):
         cursor.execute('''CREATE TABLE if not exists food 
                        ( name        VARCHAR(50), 
                          GI          INT,
-                         XE          INT);''')
+                         XE          INT,
+                         protein     VARCHAR(50),
+                         fats        VARCHAR(50),
+                         carbo       VARCHAR(50),
+                         calorii     VARCHAR(50));''')
 
 
 
@@ -1232,19 +1231,24 @@ class MyApp(MDApp):
             conn = sqlite3.connect('diabet.db')
             cursor = conn.cursor()
 
-            self.root.get_screen("twelve").ids.container.clear_widgets()
+            self.root.get_screen("twelve").ids.container112.clear_widgets()
 
 
 
-            sql_command = "INSERT INTO food (name, GI, XE) VALUES (?, ?, ?)"
-            values = (self.root.get_screen("eleven").ids.dbname.text, self.root.get_screen("eleven").ids.dbgi.text,
-                      self.root.get_screen("eleven").ids.dbxe.text,)
+            sql_command = "INSERT INTO food (name, GI, XE, protein, fats, carbo, calorii) VALUES (?, ?, ?, ?, ?, ?, ?)"
+            values = (self.root.get_screen("eleven").ids.dbname.text, int(self.root.get_screen("eleven").ids.dbgi.text),
+                      int(self.root.get_screen("eleven").ids.dbxe.text),self.root.get_screen("eleven").ids.dbpro.text, self.root.get_screen("eleven").ids.dbfats.text,
+                      self.root.get_screen("eleven").ids.dbcarbo.text,self.root.get_screen("eleven").ids.dbcal.text,)
 
             cursor.execute(sql_command, values)
 
             self.root.get_screen('eleven').ids.dbname.text = ""
             self.root.get_screen('eleven').ids.dbgi.text = ""
             self.root.get_screen('eleven').ids.dbxe.text = ""
+            self.root.get_screen('eleven').ids.dbpro.text = ""
+            self.root.get_screen('eleven').ids.dbfats.text = ""
+            self.root.get_screen('eleven').ids.dbcarbo.text = ""
+            self.root.get_screen('eleven').ids.dbcal.text = ""
 
 
 
@@ -1257,8 +1261,6 @@ class MyApp(MDApp):
             cursor.execute("SELECT XE FROM food ORDER BY name")
             XES = cursor.fetchall()
 
-
-
             word = ''
             word1 = ''
             word2 = ''
@@ -1268,10 +1270,16 @@ class MyApp(MDApp):
                 word1 = f'{word1}\n{Gi[0]}'
                 word2 = f'{word2}\n{Xe[0]}'
                 wor = word + word1 + word2
-                self.root.get_screen("twelve").ids.container.add_widget(
-                    MDRectangleFlatButton(text=record[0],
-                                          size_hint={1, .15}, text_color=(1 / 255, 45 / 255, 80 / 255, 1),
-                                          line_color=(1 / 255, 45 / 255, 80 / 255, 1), halign='left',
+                if Gi[0] < 40:
+                    color = (176 / 255, 255 / 255, 191 / 255, 1)
+                elif (Gi[0] >= 40) and (Gi[0] < 70):
+                    color = (246 / 255, 250 / 255, 187 / 255, 1)
+                elif Gi[0] >= 70:
+                    color = (252 / 255, 215 / 255, 215 / 255, 1)
+
+                self.root.get_screen("twelve").ids.container112.add_widget(
+                    MDRectangleFlatButton(text=record[0], size_hint={1, .15}, text_color=(0, 0, 0, 1),
+                                          line_color=(0, 0, 0, 1), md_bg_color=color, halign='left',
                                           on_release=self.foo)
 
                 )
@@ -1343,20 +1351,60 @@ class MyApp(MDApp):
                 word1 = ''
                 word2 = ''
 
-        # glukosa_all_time = []
-        # for i in records:
-        #     glukosa_all_time.append(i[0])
-        #
-        # for icon in glukosa_all_time:
-        #     if icon.startswith(text):
-        #         self.root.get_screen("twelve").ids.container112.add_widget(
-        #             MDRectangleFlatButton(text=icon, size_hint={1, .15}, text_color=(0, 0, 0, 1),
-        #                               line_color=(0, 0, 0, 1), halign='left', on_release=self.foo)
-        #         )
+
+
+        conn.commit()
+        conn.close()
+    def set_gramm(self, text):
+        print(text)
+        print(self.items)
+
+        conn = sqlite3.connect('diabet.db')
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT XE FROM food WHERE name  = ?", [self.items])
+        records_name = cursor.fetchall()[0][0]
+
+        self.XES = int(text) * int(records_name) / 100
+
+        print(self.XES)
+
+        sql_command3 = "INSERT INTO food_days1 (days1, XEs1) VALUES (?, ?)"
+        values = (self.items, self.XES)
+
+        cursor.execute(sql_command3, values)
+
+        self.root.get_screen("ten").ids.container1.clear_widgets()
+
+        cursor.execute("SELECT days1 FROM food_days1")
+        records = cursor.fetchall()
+
+        word = ''
+
+        for record in records:
+            word = f'{word}\n{record[0]}'
+            self.root.get_screen("ten").ids.container1.add_widget(
+                OneLineListItem(text=f'{word}')
+            )
+
+            word = ''
+
+        query = "SELECT CAST(SUM(XE) AS SIGNED) FROM food INNER JOIN food_days1 ON food.name = food_days1.days1"
+
+        cursor.execute(query)
+
+        self.sum1 = cursor.fetchall()[0]
+        print(int(self.sum1[0]))
+        if (int(self.sum1[0]) > 30):
+            # notify3()
+            pass
+
+
 
         conn.commit()
         conn.close()
 
+        self.popupWindow.dismiss()
 
 
 conn = sqlite3.connect('diabet.db')

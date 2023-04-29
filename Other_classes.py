@@ -1,14 +1,24 @@
+from ctypes import windll
+
+windll.user32.SetProcessDpiAwarenessContext(-4)
+
+import matplotlib
+
+matplotlib.use('TkAgg', force=True)
+
 from kivy.config import Config
+
+Config.set("graphics", "resizable", 0)
+Config.set("graphics", "width", 394)
+Config.set("graphics", "height", 598)
+
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
+from kivy.uix.textinput import TextInput
 from kivymd_extensions.akivymd.uix.charts import AKPieChart
 
 import Other_classes
-
-Config.set("graphics", "resizable", 0)
-Config.set("graphics", "width", 324)
-Config.set("graphics", "height", 491)
 
 from kivy.uix.screenmanager import Screen
 from kivymd.uix.screen import MDScreen
@@ -23,6 +33,7 @@ from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.card import MDCard
 from kivy.properties import StringProperty, ObjectProperty
 import sqlite3
+import main
 
 
 class Popups(FloatLayout):
@@ -120,6 +131,9 @@ class HeroCard_calculator_in(ElevationCard):
     tag = StringProperty()
     manager = ObjectProperty()
 
+
+class TextI(TextInput):
+    pass
 
 class FirstWindow(Screen):
     pass
@@ -452,6 +466,12 @@ class ThirtyFiveWindow(MDScreen):
 class ThirtySixWindow(MDScreen):
     pass
 
+
+class ThirtySevenWindow(MDScreen):
+    pass
+
+class ThirtyEightWindow(MDScreen):
+    pass
 
 class WindowManager(MDScreenManager):
     pass

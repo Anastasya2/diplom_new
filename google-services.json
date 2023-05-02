@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "641144341625",
+    "project_id": "kivyapp-382310",
+    "storage_bucket": "kivyapp-382310.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:641144341625:android:40e56664c907679eab80a8",
+        "android_client_info": {
+          "package_name": "sinitsa.by"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "641144341625-mbvv8nd9h52qdk5crs6t0rds7h1s2v5e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sinitsa.by",
+            "certificate_hash": "0f0e1c25ae5ef89a4de5460d784390581284b951"
+          }
+        },
+        {
+          "client_id": "641144341625-s8r3j3k9drsgdtv4eb3m1okrr8mtjbai.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1V70_AL-biMJEajU7dCss7YbZ0sZUFlE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "641144341625-s8r3j3k9drsgdtv4eb3m1okrr8mtjbai.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

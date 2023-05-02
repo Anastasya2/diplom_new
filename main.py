@@ -46,6 +46,7 @@ from kivy.uix.textinput import TextInput
 from kivymd.uix.button import MDFlatButton
 import numpy as np
 import sqlite3
+import pandas as pd
 
 
 class MyApp(MDApp):
@@ -54,6 +55,8 @@ class MyApp(MDApp):
     noti = False
     items = None
     popupWindow = None
+    export_period = None
+    dialog = None
 
     food_data = {
         'График': 'chart-line',
@@ -737,6 +740,7 @@ class MyApp(MDApp):
         conn.commit()
         conn.close()
 
+
     def foo(self, item):
         self.items = item.text
 
@@ -771,7 +775,6 @@ class MyApp(MDApp):
         self.boxl = Other_classes.ThirtySevenWindow()
         self.boxl.add_widget(self.lab)
 
-        #self.root.get_screen("thirtyseven").ids.labtext.text = f'Белки: {records1[3]}\nЖиры: {records1[4]}\nУглеводы: {records1[5]}\nКалории: {records1[6]}\n\nХлебные единицы: {records1[2]}\nГликемический индекс: {records1[1]}'
         self.popupWindow = Popup(title=f"{item.text}",
                             content=self.boxl,
                             size_hint=(None, None), size=(300, 340),
@@ -782,9 +785,6 @@ class MyApp(MDApp):
 
         conn.commit()
         conn.close()
-
-
-
     def on_start(self):
         conn = sqlite3.connect('diabet.db')
         cursor = conn.cursor()
@@ -875,6 +875,10 @@ class MyApp(MDApp):
                 Other_classes.HeroCard_info(source="info.png", tag=f"Tag{7}",
                                                   on_touch_down=self.on_tap_card_info)
             )
+            self.root.get_screen("seven").ids.hero_list.add_widget(
+                Other_classes.HeroCard_settings(source="set2.png", tag=f"Tag{8}",
+                                            on_touch_down=self.on_tap_card_settings)
+            )
 
         if not self.root.get_screen("twentyeight").ids.hero_list_info.children:
             self.root.get_screen("twentyeight").ids.hero_list_info.add_widget(
@@ -906,6 +910,15 @@ class MyApp(MDApp):
             )
 
 
+        if not self.root.get_screen("thirtyeight").ids.hero_list_settings.children:
+            self.root.get_screen("thirtyeight").ids.hero_list_settings.add_widget(
+                Other_classes.HeroCard_noti(tag=f"Tag{0}", on_touch_down=self.on_tap_card_noti)
+            )
+            self.root.get_screen("thirtyeight").ids.hero_list_settings.add_widget(
+                Other_classes.HeroCard_export(tag=f"Tag{1}", on_touch_down=self.on_tap_card_export)
+            )
+
+
 
         conn.commit()
         conn.close()
@@ -926,6 +939,8 @@ class MyApp(MDApp):
         MDApp.get_running_app().root.current = "thirtysix"
     def on_tap_card_info(self, *args):
         MDApp.get_running_app().root.current = "twentyeight"
+    def on_tap_card_settings(self, *args):
+        MDApp.get_running_app().root.current = "thirtyeight"
     def on_tap_card_diabet(self, *args):
         MDApp.get_running_app().root.current = "twentynine"
     def on_tap_card_sugar_diapozon(self, *args):
@@ -940,6 +955,10 @@ class MyApp(MDApp):
         MDApp.get_running_app().root.current = "thirtyfour"
     def on_tap_card_profilactica(self, *args):
         MDApp.get_running_app().root.current = "thirtyfive"
+    def on_tap_card_noti(self, *args):
+        MDApp.get_running_app().root.current = "thirtynine"
+    def on_tap_card_export(self, *args):
+        MDApp.get_running_app().root.current = "forty"
 
 
     def back_to_window_five(self):
@@ -1224,6 +1243,12 @@ class MyApp(MDApp):
             self.user_sex = sex
         else:
             self.user_sex = None
+    def checkbox_click_export(self, instance, value, period):
+
+        if value:
+            self.export_period = period
+        else:
+            self.export_period = None
     def add_food_to_bd(self):
 
         try:
@@ -1405,6 +1430,251 @@ class MyApp(MDApp):
         conn.close()
 
         self.popupWindow.dismiss()
+
+
+    def export(self):
+        conn = sqlite3.connect('diabet.db')
+        cursor = conn.cursor()
+
+
+        if self.export_period == 'week':
+            sql_command = "SELECT glu_level FROM glukosa WHERE strftime(dat) > (date('now', '-7 day'))"
+        if self.export_period == 'month':
+            sql_command = "SELECT glu_level FROM glukosa WHERE strftime(dat) > (date('now', '-1 month'))"
+        else:
+            sql_command = "SELECT glu_level FROM glukosa"
+
+        cursor.execute(sql_command)
+        glukosa = cursor.fetchall()
+
+        glukosa_all_time = []
+        for i in glukosa:
+            glukosa_all_time.append(i[0])
+
+
+
+        if self.export_period == 'week':
+            sql_command1 = "SELECT dat FROM glukosa WHERE strftime(dat) > (date('now', '-7 day'))"
+        if self.export_period == 'month':
+            sql_command1 = "SELECT dat FROM glukosa WHERE strftime(dat) > (date('now', '-1 month'))"
+        else:
+            sql_command1 = "SELECT dat FROM glukosa"
+
+        cursor.execute(sql_command1)
+        dat = cursor.fetchall()
+
+        date_time_glu = []
+        for i in dat:
+            date_time_glu.append(i[0])
+
+
+
+        if self.export_period == 'week':
+            sql_command2 = "SELECT timeact FROM physics WHERE strftime(dat) > (date('now', '-7 day'))"
+        if self.export_period == 'month':
+            sql_command2 = "SELECT timeact FROM physics WHERE strftime(dat) > (date('now', '-1 month'))"
+        else:
+            sql_command2 = "SELECT timeact FROM physics"
+
+        cursor.execute(sql_command2)
+        phys_activity = cursor.fetchall()
+
+        act_for_week = []
+        for phytime in phys_activity:
+            act_for_week.append(phytime[0])
+
+
+
+        if self.export_period == 'week':
+            sql_command3 = "SELECT dat FROM physics WHERE strftime(dat) > (date('now', '-7 day'))"
+        if self.export_period == 'month':
+            sql_command3 = "SELECT dat FROM physics WHERE strftime(dat) > (date('now', '-1 month'))"
+        else:
+            sql_command3 = "SELECT dat FROM physics"
+
+        cursor.execute(sql_command3)
+        date_of_phy = cursor.fetchall()
+
+        date_time_phy = []
+
+        for i_date in date_of_phy:
+            date_time_phy.append(i_date[0])
+
+
+
+        if self.export_period == 'week':
+            sql_command4 = "SELECT calorii FROM physics_cal WHERE strftime(dat) > (date('now', '-7 day'))"
+        if self.export_period == 'month':
+            sql_command4 = "SELECT calorii FROM physics_cal WHERE strftime(dat) > (date('now', '-1 month'))"
+        else:
+            sql_command4 = "SELECT calorii FROM physics_cal"
+
+        cursor.execute(sql_command4)
+        calorii_of_phys = cursor.fetchall()
+
+        calorii = []
+        for i in calorii_of_phys:
+            calorii.append(i[0])
+
+
+
+        if self.export_period == 'week':
+            sql_command5 = "SELECT dat FROM physics_cal WHERE strftime(dat) > (date('now', '-7 day'))"
+        if self.export_period == 'month':
+            sql_command5 = "SELECT dat FROM physics_cal WHERE strftime(dat) > (date('now', '-1 month'))"
+        else:
+            sql_command5 = "SELECT dat FROM physics_cal"
+
+        cursor.execute(sql_command5)
+        cal_date = cursor.fetchall()
+
+        date_time_calorii = []
+        for i in cal_date:
+            date_time_calorii.append(i[0])
+
+
+
+        if self.export_period == 'week':
+            sql_command6 = "SELECT bloodSis FROM blood WHERE strftime(dat) > (date('now', '-7 day'))"
+        if self.export_period == 'month':
+            sql_command6 = "SELECT bloodSis FROM blood WHERE strftime(dat) > (date('now', '-1 month'))"
+        else:
+            sql_command6 = "SELECT bloodSis FROM blood"
+
+        cursor.execute(sql_command6)
+        sis = cursor.fetchall()
+
+        blood_sistol = []
+        for i in sis:
+            blood_sistol.append(i[0])
+
+
+
+        if self.export_period == 'week':
+            sql_command7 = "SELECT bloodDis FROM blood WHERE strftime(dat) > (date('now', '-7 day'))"
+        if self.export_period == 'month':
+            sql_command7 = "SELECT bloodDis FROM blood WHERE strftime(dat) > (date('now', '-1 month'))"
+        else:
+            sql_command7 = "SELECT bloodDis FROM blood"
+
+        cursor.execute(sql_command7)
+        dis = cursor.fetchall()
+
+        blood_distol = []
+        for i in dis:
+            blood_distol.append(i[0])
+
+
+
+        if self.export_period == 'week':
+            sql_command8 = "SELECT dat FROM blood WHERE strftime(dat) > (date('now', '-7 day'))"
+        if self.export_period == 'month':
+            sql_command8 = "SELECT dat FROM blood WHERE strftime(dat) > (date('now', '-1 month'))"
+        else:
+            sql_command8 = "SELECT dat FROM blood"
+
+        cursor.execute(sql_command8)
+        dat = cursor.fetchall()
+
+        date_time_blood = []
+        for i in dat:
+            date_time_blood.append(i[0])
+
+
+
+        if self.export_period == 'week':
+            sql_command9 = "SELECT XE FROM food_xe WHERE strftime(dat) > (date('now', '-7 day'))"
+        if self.export_period == 'month':
+            sql_command9 = "SELECT XE FROM food_xe WHERE strftime(dat) > (date('now', '-1 month'))"
+        else:
+            sql_command9 = "SELECT XE FROM food_xe"
+
+        cursor.execute(sql_command9)
+        food_xe = cursor.fetchall()
+
+        xe = []
+        for i in food_xe:
+            xe.append(i[0])
+
+
+
+        if self.export_period == 'week':
+            sql_command10 = "SELECT dat FROM food_xe WHERE strftime(dat) > (date('now', '-7 day'))"
+        if self.export_period == 'month':
+            sql_command10 = "SELECT dat FROM food_xe WHERE strftime(dat) > (date('now', '-1 month'))"
+        else:
+            sql_command10 = "SELECT dat FROM food_xe"
+
+        cursor.execute(sql_command10)
+        dat = cursor.fetchall()
+
+        date_time_xe = []
+        for i in dat:
+            date_time_xe.append(i[0])
+
+
+
+        data = {'Уровень глюкозы': glukosa_all_time,
+                'Дата': date_time_glu
+                }
+        df = pd.DataFrame(data)
+
+
+
+        data1 = {'Время физической активности (в минутах)': act_for_week,
+                'Дата': date_time_phy
+                }
+        df1 = pd.DataFrame(data1)
+
+
+
+        data2 = {'Калории, затраченные на физическую активность': calorii,
+                'Дата': date_time_calorii
+                }
+        df2 = pd.DataFrame(data2)
+
+
+
+        data3 = {'Систолическое': blood_sistol,
+                 'Дистолическое': blood_distol,
+                'Дата': date_time_blood
+                }
+        df3 = pd.DataFrame(data3)
+
+
+
+        data4 = {'Количество хлебных единиц, употребленных за сутки': xe,
+                'Дата': date_time_xe
+                }
+        df4 = pd.DataFrame(data4)
+
+
+
+        with pd.ExcelWriter("export_data.xlsx", engine="xlsxwriter") as writer:
+            df.to_excel(writer, sheet_name="Глюкоза", index=False)
+            df1.to_excel(writer, sheet_name="Время физической активности", index=False)
+            df2.to_excel(writer, sheet_name="Потраченные калории", index=False)
+            df3.to_excel(writer, sheet_name="Давление", index=False)
+            df4.to_excel(writer, sheet_name="Количество хе за сутки", index=False)
+
+
+
+        conn.commit()
+        conn.close()
+        if not self.dialog:
+            self.dialog = MDDialog(
+                title="Экспортировано успешно!"
+            )
+        self.dialog.open()
+
+        # popupWindow = Popup(title=" ",
+        #                     content=Label(text='Успешно экспортировано!', color=(38 / 255, 201 / 255, 185 / 255, 1)),
+        #                     size_hint=(None, None), size=(200, 150),
+        #                     separator_color=[38 / 255, 201 / 255, 185 / 255, 1], title_align="center",
+        #                     title_color=[38 / 255, 201 / 255, 185 / 255, 1])
+        #
+        # popupWindow.open()
+
 
 
 conn = sqlite3.connect('diabet.db')

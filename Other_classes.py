@@ -125,8 +125,17 @@ class HeroCard_profilactica(ElevationCard):
     tag = StringProperty()
     manager = ObjectProperty()
 
+class HeroCard_settings(ElevationCard):
+    source = StringProperty()
+    tag = StringProperty()
+    manager = ObjectProperty()
 
-class HeroCard_calculator_in(ElevationCard):
+class HeroCard_noti(ElevationCard):
+    source = StringProperty()
+    tag = StringProperty()
+    manager = ObjectProperty()
+
+class HeroCard_export(ElevationCard):
     source = StringProperty()
     tag = StringProperty()
     manager = ObjectProperty()
@@ -466,11 +475,16 @@ class ThirtyFiveWindow(MDScreen):
 class ThirtySixWindow(MDScreen):
     pass
 
-
 class ThirtySevenWindow(MDScreen):
     pass
 
 class ThirtyEightWindow(MDScreen):
+    pass
+
+class ThirtyNineWindow(MDScreen):
+    pass
+
+class FortyWindow(MDScreen):
     pass
 
 class WindowManager(MDScreenManager):

@@ -470,10 +470,45 @@
         font_style: 'H6'
 
 
-<HeroCard_calculator_in>
+<HeroCard_settings>
+    orientation: 'vertical'
+    name:'once'
+    size_hint: 1,None
+    height: "320dp"
+    elevation: 8
+    radius: 24
+    padding: 12
+
+    MDHeroFrom:
+        id: hero_from
+        tag: root.tag
+        size_hint: 1, None
+        height: root.height / 1.8
+
+        FitImage:
+            source: root.source
+            size_hint: None,None
+            size: hero_from.size
+            radius: 24
+
+    MDLabel:
+        text:'Настройки'
+        bold: True
+        adaptive_height: True
+        padding: 12,12
+        font_style: 'H5'
+
+    MDLabel:
+        id: eat
+        padding: 12,12
+        text:'Настройте уведомления и экспорт для себя.'
+
+
+
+<HeroCard_noti>
     orientation: 'vertical'
     size_hint: 1,None
-    height: "265dp"
+    height: "50dp"
     elevation: 8
     radius: 24
     padding: 12
@@ -484,14 +519,31 @@
         size_hint: 1, None
         height: root.height / 1.8
 
-        FitImage:
-            source: root.source
-            size_hint: None,None
-            size: hero_from3.size
-            radius: 24
+    MDLabel:
+        text:'Уведомления'
+        bold: True
+        adaptive_height: True
+        padding: 12,12
+        font_style: 'H6'
+
+
+
+<HeroCard_export>
+    orientation: 'vertical'
+    size_hint: 1,None
+    height: "50dp"
+    elevation: 8
+    radius: 24
+    padding: 12
+
+    MDHeroFrom:
+        id: hero_from3
+        tag: root.tag
+        size_hint: 1, None
+        height: root.height / 1.8
 
     MDLabel:
-        text:'Профилактика диабета.'
+        text:'Экспорт'
         bold: True
         adaptive_height: True
         padding: 12,12

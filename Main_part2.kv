@@ -37,7 +37,8 @@ WindowManager:
     ThirtySixWindow:
     ThirtySevenWindow:
     ThirtyEightWindow:
-
+    ThirtyNineWindow:
+    FortyWindow:
 
 
 
@@ -1711,19 +1712,6 @@ WindowManager:
     MDBoxLayout:
         spacing: "12dp"
 
-#        MDTextField:
-    #        id: texti
-   #         size_hint_x: None
-   #         pos_hint: {"top":1.03,'left': 1}
-   #         width: 200
-   #        font_size: 16
-   #         hint_text: "Введите граммы"
-   #         helper_text_mode: "on_focus"
-   #         line_color_normal: (1,1,1,1)
-   #         line_color_focus: (1,1,1,1)
-   #         hint_text_color_normal: (40/255, 40/255, 40/255,1)
-   #         hint_text_color_focus: (1,1,1,1)
-   #         text_color_focus: (1,1,1,1)
         MDTextField:
             id: texti
             hint_text: "Введите граммы"
@@ -1746,6 +1734,253 @@ WindowManager:
             pos_hint: {"top":1,'right': 1}
             on_release: app.set_gramm(texti.text)
 
+
+
+<ThirtyEightWindow>:
+    name: 'thirtyeight'
+    md_bg_color: app.theme_cls.bg_light
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: '12dp','15dp','12dp','12dp'
+        spacing: "24dp"
+        MDBoxLayout:
+            orientation:'vertical'
+            spacing: "1dp"
+            padding: "1dp"
+
+            MDTopAppBar:
+                id: toolbar
+                size_hint_y: None
+                height: "7dp"
+                md_bg_color: 'white'
+                title: 'Настройки'
+                font_size: 10
+                left_action_items: [["arrow-left", lambda x:app.back_to_window_seven()]]
+                specific_text_color: 0,0,0,1
+
+            ScrollView:
+                MDList:
+                    id:hero_list_settings
+                    padding: '24dp'
+                    spacing: '24dp'
+
+
+
+<ThirtyNineWindow>:
+    name: 'thirtynine'
+
+    BoxLayout:
+        size_hint: 1,1
+        pos_hint: {'center_x':.5, 'center_y':.5}
+        padding: 25
+        spacing: 25
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            id: toolbar
+            size_hint_y: None
+            height: "7dp"
+            md_bg_color: 'white'
+            title: 'Уведомления'
+            font_size: 10
+            left_action_items: [["arrow-left", lambda x:app.back_to_window_thirtyeight()]]
+            specific_text_color: 0,0,0,1
+
+        MDLabel:
+            id: welcome_label
+            text: 'Пожалуйста, укажите свои данные: '
+            font_size: 25
+            halign: 'center'
+            size_hint_y: None
+            height: self.texture_size[1]
+            padding_y: 15
+
+        MDTextField:
+            id: firstname
+            hint_text: "Имя"
+            helper_text_mode: 'on_focus'
+            line_color_normal: 'black'
+            line_color_focus: "black"
+            hint_text_color_normal: "black"
+            hint_text_color_focus: "black"
+            text_color_focus: "black"
+            icon_right: 'account'
+            icon_right_color_normal: "black"
+            icon_right_color_focus: "black"
+            size_hint_x: None
+            width: 200
+            font_size: 20
+            pos_hint: {'center_x':.5}
+
+        MDTextField:
+            id: secondname
+            hint_text: "Фамилия"
+            helper_text_mode: 'on_focus'
+            line_color_normal: 'black'
+            line_color_focus: "black"
+            hint_text_color_normal: "black"
+            hint_text_color_focus: "black"
+            text_color_focus: "black"
+            icon_right: 'account'
+            icon_right_color_normal: "black"
+            icon_right_color_focus: "black"
+            size_hint_x: None
+            width: 200
+            font_size: 20
+            pos_hint: {'center_x':.5}
+
+        GridLayout:
+            cols:2
+
+            Label:
+                color: (7/255,7/255,7/255,1)
+                text: "М"
+                font_size: 18
+
+            Label:
+                color: (7/255,7/255,7/255,1)
+                text: " Ж"
+                font_size: 18
+
+            CheckBox:
+                color: (7/255,7/255,7/255,1)
+                id: check
+                group: 'sex'
+                on_active: app.checkbox_click(self, self.active, "male")
+
+            CheckBox:
+                color: (7/255,7/255,7/255,1)
+                id: check2
+                group: 'sex'
+                on_active: app.checkbox_click(self, self.active, "female")
+
+
+        BoxLayout:
+            size_hint: 1,1
+
+            Widget:
+
+            MDRoundFlatButton:
+                text:'Далее'
+                text_color: "black"
+                line_color: "black"
+                font_size: 12
+                padding:10
+                on_press: app.logger()
+
+                on_release:
+                    app.root.current = "six"
+                    root.manager.transition.direction = "left"
+
+            Widget:
+                size_hint:.1,.1
+
+            MDRoundFlatButton:
+                text:'Очистить'
+                text_color: "black"
+                line_color: "black"
+                font_size: 12
+                padding:3
+                on_press: app.clear_five_window()
+
+            Widget:
+
+        Widget:
+            size_hint:.1,.1
+
+
+
+<FortyWindow>:
+    name: 'forty'
+    FitImage:
+        source:"set_bg2.png"
+
+    BoxLayout:
+        size_hint: 1, 1
+        #pos_hint: {'center_x':.5, 'center_y':.5}
+        #padding: 25
+        spacing: 25
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            id: toolbar
+            size_hint_y: None
+            height: "5dp"
+            md_bg_color: (199/255, 181/255, 167/255, 1)
+            title: 'Экспорт'
+            font_size: 10
+            left_action_items: [["arrow-left", lambda x:app.back_to_window_thirtyeight()]]
+            specific_text_color: 0,0,0,1
+
+        MDLabel:
+            id: welcome_label
+            text: 'Выберите период экспорта: '
+            font_size: 25
+            halign: 'center'
+            size_hint_y: None
+            height: self.texture_size[1]
+            padding_y: 10
+
+
+
+        GridLayout:
+            cols:2
+            padding: 20
+
+            Label:
+                color: (7/255,7/255,7/255,1)
+                text: "        За последнюю неделю:"
+                font_size: 18
+
+            CheckBox:
+                color: (7/255,7/255,7/255,1)
+                id: check
+                group: 'period'
+                on_active: app.checkbox_click_export(self, self.active, "week")
+
+            Label:
+                color: (7/255,7/255,7/255,1)
+                text: "        За последний месяц:      "
+                font_size: 18
+
+            CheckBox:
+                color: (7/255,7/255,7/255,1)
+                id: check2
+                group: 'period'
+                on_active: app.checkbox_click_export(self, self.active, "month")
+
+            Label:
+                color: (7/255,7/255,7/255,1)
+                text: "        За все время:                     "
+                font_size: 18
+
+            CheckBox:
+                color: (7/255,7/255,7/255,1)
+                id: check3
+                group: 'period'
+                on_active: app.checkbox_click_export(self, self.active, "all")
+
+        BoxLayout:
+            orientation:'vertical'
+
+            Widget:
+
+            MDRoundFlatButton:
+                text:'Экспорт'
+                text_color: "black"
+                line_color: "black"
+                pos_hint: {'center_x':.5, 'center_y':.5}
+                size_hint:(.5,.3)
+                font_size: 19
+                padding:10
+                on_press: app.export()
+
+            Widget:
+                size_hint:.1,.1
+
+        Widget:
+            size_hint:.1,.5
 
 
 

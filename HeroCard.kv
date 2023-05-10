@@ -434,7 +434,7 @@
             radius: 24
 
     MDLabel:
-        text:'Первая помощь при диабете.'
+        text:'Первая помощь при гипогликемии.'
         bold: True
         adaptive_height: True
         padding: 12,12
@@ -544,6 +544,52 @@
 
     MDLabel:
         text:'Экспорт'
+        bold: True
+        adaptive_height: True
+        padding: 12,12
+        font_style: 'H6'
+
+
+
+<HeroCard_charts>
+    orientation: 'vertical'
+    size_hint: 1,None
+    height: "50dp"
+    elevation: 8
+    radius: 24
+    padding: 12
+
+    MDHeroFrom:
+        id: hero_from3
+        tag: root.tag
+        size_hint: 1, None
+        height: root.height / 1.8
+
+    MDLabel:
+        text:'Графики'
+        bold: True
+        adaptive_height: True
+        padding: 12,12
+        font_style: 'H6'
+
+
+
+<HeroCard_average>
+    orientation: 'vertical'
+    size_hint: 1,None
+    height: "50dp"
+    elevation: 8
+    radius: 24
+    padding: 12
+
+    MDHeroFrom:
+        id: hero_from3
+        tag: root.tag
+        size_hint: 1, None
+        height: root.height / 1.8
+
+    MDLabel:
+        text:'Средние значения'
         bold: True
         adaptive_height: True
         padding: 12,12

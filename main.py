@@ -57,6 +57,10 @@ class MyApp(MDApp):
     popupWindow = None
     export_period = None
     dialog = None
+    export_format = None
+    notify_all = None
+    notify_food = None
+    notify_med = None
 
     food_data = {
         'График': 'chart-line',
@@ -910,12 +914,23 @@ class MyApp(MDApp):
             )
 
 
+
         if not self.root.get_screen("thirtyeight").ids.hero_list_settings.children:
             self.root.get_screen("thirtyeight").ids.hero_list_settings.add_widget(
                 Other_classes.HeroCard_noti(tag=f"Tag{0}", on_touch_down=self.on_tap_card_noti)
             )
             self.root.get_screen("thirtyeight").ids.hero_list_settings.add_widget(
                 Other_classes.HeroCard_export(tag=f"Tag{1}", on_touch_down=self.on_tap_card_export)
+            )
+
+
+
+        if not self.root.get_screen("twentythree").ids.hero_list_stat.children:
+            self.root.get_screen("twentythree").ids.hero_list_stat.add_widget(
+                Other_classes.HeroCard_charts(tag=f"Tag{0}", on_touch_down=self.on_tap_card_charts)
+            )
+            self.root.get_screen("twentythree").ids.hero_list_stat.add_widget(
+                Other_classes.HeroCard_average(tag=f"Tag{1}", on_touch_down=self.on_tap_card_average)
             )
 
 
@@ -959,6 +974,10 @@ class MyApp(MDApp):
         MDApp.get_running_app().root.current = "thirtynine"
     def on_tap_card_export(self, *args):
         MDApp.get_running_app().root.current = "forty"
+    def on_tap_card_charts(self, *args):
+        MDApp.get_running_app().root.current = "fortyone"
+    def on_tap_card_average(self, *args):
+        MDApp.get_running_app().root.current = "forty"
 
 
     def back_to_window_five(self):
@@ -981,6 +1000,8 @@ class MyApp(MDApp):
         MDApp.get_running_app().root.current = "twentyeight"
     def back_to_window_thirtyeight(self):
         MDApp.get_running_app().root.current = "thirtyeight"
+    def back_to_window_fortyone(self):
+        MDApp.get_running_app().root.current = "fortyone"
 
 
     def build(self):
@@ -1116,6 +1137,10 @@ class MyApp(MDApp):
             self.root.get_screen("seventeen").ids.meds.text = ''
             self.root.get_screen("seventeen").ids.edn.text = ''
             self.root.get_screen("seventeen").ids.doz.text = ''
+
+            if self.notify_all:
+                if self.notify_med:
+                    notify()
 
             conn.commit()
             conn.close()
@@ -1420,9 +1445,11 @@ class MyApp(MDApp):
 
         self.sum1 = cursor.fetchall()[0]
         print(int(self.sum1[0]))
+
         if (int(self.sum1[0]) > 30):
-            # notify3()
-            pass
+            if self.notify_all:
+                if self.notify_food:
+                    notify3()
 
 
 
@@ -1432,6 +1459,39 @@ class MyApp(MDApp):
         self.popupWindow.dismiss()
 
 
+    def switch_click_all(self, switchObject, switchValue):
+        if (switchValue):
+            print("You clicked the Switch On!!")
+            self.notify_all = False
+        else:
+            print("You clicked the Switch Off!!")
+            self.notify_all = True
+    def switch_click_food(self, switchObject, switchValue):
+        if (switchValue):
+            print("You clicked the Switch On!!")
+            self.notify_food = False
+        else:
+            print("You clicked the Switch Off!!")
+            self.notify_food = True
+    def switch_click_med(self, switchObject, switchValue):
+        if (switchValue):
+            print("You clicked the Switch On!!")
+            self.notify_med = False
+        else:
+            print("You clicked the Switch Off!!")
+            self.notify_med = True
+
+
+    def removes_marks_all_chips(self, selected_instance_chip, text):
+        for instance_chip in self.root.get_screen("forty").ids.chip_box.children:
+            if instance_chip != selected_instance_chip:
+                instance_chip.active = False
+        if text == 'csv':
+            self.export_format = 'csv'
+            print(self.export_format)
+        else:
+            self.export_format = 'xlsx'
+            print(self.export_format)
     def export(self):
         conn = sqlite3.connect('diabet.db')
         cursor = conn.cursor()
@@ -1650,30 +1710,30 @@ class MyApp(MDApp):
 
 
 
-        with pd.ExcelWriter("export_data.xlsx", engine="xlsxwriter") as writer:
-            df.to_excel(writer, sheet_name="Глюкоза", index=False)
-            df1.to_excel(writer, sheet_name="Время физической активности", index=False)
-            df2.to_excel(writer, sheet_name="Потраченные калории", index=False)
-            df3.to_excel(writer, sheet_name="Давление", index=False)
-            df4.to_excel(writer, sheet_name="Количество хе за сутки", index=False)
+        if self.export_format == 'csv':
+            with open('export_data_csv.csv', 'w') as f:
+                df.to_csv(f, index=False)
+                df1.to_csv(f, mode='a', index=False)
+                df2.to_csv(f, mode='a', index=False)
+                df3.to_csv(f, mode='a', index=False)
+                df4.to_csv(f, mode='a', index=False)
 
-
+        if self.export_format == 'xlsx':
+            with pd.ExcelWriter("export_data_xlsx.xlsx", engine="xlsxwriter") as writer:
+                df.to_excel(writer, sheet_name="Глюкоза", index=False)
+                df1.to_excel(writer, sheet_name="Время физической активности", index=False)
+                df2.to_excel(writer, sheet_name="Потраченные калории", index=False)
+                df3.to_excel(writer, sheet_name="Давление", index=False)
+                df4.to_excel(writer, sheet_name="Количество хе за сутки", index=False)
 
         conn.commit()
         conn.close()
+
         if not self.dialog:
             self.dialog = MDDialog(
                 title="Экспортировано успешно!"
             )
         self.dialog.open()
-
-        # popupWindow = Popup(title=" ",
-        #                     content=Label(text='Успешно экспортировано!', color=(38 / 255, 201 / 255, 185 / 255, 1)),
-        #                     size_hint=(None, None), size=(200, 150),
-        #                     separator_color=[38 / 255, 201 / 255, 185 / 255, 1], title_align="center",
-        #                     title_color=[38 / 255, 201 / 255, 185 / 255, 1])
-        #
-        # popupWindow.open()
 
 
 
@@ -1702,10 +1762,11 @@ def notify():
 def notify2():
     plyer.notification.notify(title='Напоминание', message=f'Не забудьте о физических упражнениях')
     tim2()
-
 def notify3():
     plyer.notification.notify(title='Предупреждение', message=f'Превышена норма хлебных единиц')
     tim()
+
+
 def tim():
     x = datetime.today()
     y = x.replace(day=x.day, hour=9, minute=0, second=0, microsecond=0) + timedelta(days=1)
@@ -1730,7 +1791,6 @@ delta_t = y - x
 secs = delta_t.total_seconds()
 t = Timer(secs, notify)
 t.start()
-
 
 
 

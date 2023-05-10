@@ -140,6 +140,16 @@ class HeroCard_export(ElevationCard):
     tag = StringProperty()
     manager = ObjectProperty()
 
+class HeroCard_charts(ElevationCard):
+    source = StringProperty()
+    tag = StringProperty()
+    manager = ObjectProperty()
+
+class HeroCard_average(ElevationCard):
+    source = StringProperty()
+    tag = StringProperty()
+    manager = ObjectProperty()
+
 
 class TextI(TextInput):
     pass
@@ -486,6 +496,9 @@ class ThirtyNineWindow(MDScreen):
 
 class FortyWindow(MDScreen):
     pass
+class FortyOneWindow(MDScreen):
+    pass
+
 
 class WindowManager(MDScreenManager):
     pass
